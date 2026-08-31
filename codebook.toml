@@ -1,0 +1,10 @@
+title = "ICPC Team Codebook"
+team = "Team Template"
+season = "2026"
+footer_note = "ICPC Codebook"
+
+# Directories ignored while recursively scanning for C++ templates.
+exclude_dirs = [".git", ".build", ".github", "scripts"]
+
+# The build succeeds, but prints a warning for longer source lines.
+warn_line_length = 92

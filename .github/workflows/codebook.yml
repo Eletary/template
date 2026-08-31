@@ -1,0 +1,77 @@
+name: Build ICPC codebook
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.cpp"
+      - "codebook.typ"
+      - "codebook.toml"
+      - "scripts/**"
+      - ".github/workflows/codebook.yml"
+  pull_request:
+    paths:
+      - "**/*.cpp"
+      - "codebook.typ"
+      - "codebook.toml"
+      - "scripts/**"
+      - ".github/workflows/codebook.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: codebook-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install CJK fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes fonts-noto-cjk
+
+      - name: Install Fontist
+        uses: fontist/setup-fontist@v2
+
+      - name: Install Consolas
+        run: fontist install "Consolas" --accept-all-licenses --no-progress
+
+      - name: Install Typst
+        uses: typst-community/setup-typst@v5
+        with:
+          typst-version: "0.15.1"
+
+      - name: Generate manifest
+        run: python3 scripts/build_codebook.py
+
+      - name: Verify Consolas and compile PDF
+        run: |
+          typst fonts --font-path ~/.fontist/fonts | grep --fixed-strings --line-regexp "Consolas"
+          typst compile --root . --font-path ~/.fontist/fonts codebook.typ main.pdf
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v6
+        with:
+          name: icpc-codebook
+          path: main.pdf
+          if-no-files-found: error
+
+      - name: Commit refreshed PDF
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          if git diff --quiet -- main.pdf; then
+            echo "main.pdf is already up to date"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add main.pdf
+          git commit -m "chore: rebuild ICPC codebook [skip ci]"
+          git push
