@@ -56,7 +56,14 @@ def printable_source(source: str) -> str:
     ]
     while kept and not kept[0].strip():
         kept.pop(0)
-    return "\n".join(kept).rstrip() + "\n"
+    while kept and not kept[-1].strip():
+        kept.pop()
+
+    compacted: list[str] = []
+    for line in kept:
+        if line.strip() or not compacted or compacted[-1].strip():
+            compacted.append(line)
+    return "\n".join(compacted)
 
 
 def is_excluded(path: Path, excluded: set[str]) -> bool:
@@ -120,7 +127,6 @@ def build_manifest(config: dict[str, object]) -> dict[str, object]:
     return {
         "title": str(config.get("title", "ICPC Team Codebook")),
         "team": team_name,
-        "season": str(config.get("season", "")),
         "footer_note": str(config.get("footer_note", "ICPC Codebook")),
         "categories": grouped,
         "stats": {

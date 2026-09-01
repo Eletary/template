@@ -50,7 +50,6 @@ All general codebook settings are stored in `codebook.toml`:
 | --- | --- |
 | `title` | Main title shown on the cover and stored in the PDF metadata. |
 | `team` | Team name shown on the cover and page footer. It is also the default author for templates without `@author`. |
-| `season` | Season or year shown on the cover. |
 | `footer_note` | Short label displayed in the page header. |
 | `exclude_dirs` | Directory names skipped while recursively scanning for `.cpp` files. |
 | `warn_line_length` | Source lines longer than this value produce a build warning but do not fail the build. |
@@ -60,7 +59,6 @@ Example:
 ```toml
 title = "ICPC Team Codebook"
 team = "Team Template"
-season = "2026"
 footer_note = "ICPC Codebook"
 exclude_dirs = [".git", ".build", ".github", "scripts"]
 warn_line_length = 92

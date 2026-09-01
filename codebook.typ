@@ -98,8 +98,6 @@
   #line(length: 68%, stroke: 1pt + black)
   #v(5mm)
   #text(size: 13pt, weight: "bold")[#book.team]
-  #h(8pt)
-  #text(size: 9pt, fill: luma(38%))[Season #book.season]
   #v(8mm)
   #grid(
     columns: (1fr, 1fr, 1fr),
@@ -120,10 +118,6 @@
       #text(size: 7pt)[SOURCE LINES]
     ],
   )
-  #v(5mm)
-  #text(size: 6.5pt, fill: luma(42%))[
-    A4 - portrait - single-column - monochrome highlight - Consolas
-  ]
 ]
 
 #v(8mm)
