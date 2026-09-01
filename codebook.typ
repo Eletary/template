@@ -8,8 +8,7 @@
 
 #set page(
   paper: "a4",
-  flipped: true,
-  margin: (top: 13mm, bottom: 13mm, inside: 11mm, outside: 9mm),
+  margin: (top: 13mm, bottom: 13mm, inside: 13mm, outside: 10mm),
   binding: left,
   header-ascent: 8pt,
   footer-descent: 8pt,
@@ -40,7 +39,7 @@
 
 #set text(
   font: ("Arial", "Microsoft YaHei", "Noto Sans CJK SC"),
-  size: 8.5pt,
+  size: 9pt,
   fill: black,
 )
 #set par(leading: 0.56em)
@@ -50,20 +49,16 @@
 #show outline.entry.where(level: 1): set text(weight: "bold")
 #show heading.where(level: 1): set text(size: 11pt, weight: "bold")
 #show heading.where(level: 2): set text(size: 9.5pt, weight: "bold")
-#show raw: set text(font: "Consolas", size: 7pt)
+#show raw: set text(font: "Consolas", size: 8.5pt)
 #set raw(theme: none, tab-size: 4)
 
 #show raw.line: line => {
-  if line.text.trim() == "" {
-    box(height: 2.4pt)[]
-  } else {
-    box(
-      width: 2.35em,
-      align(right, text(size: 5.5pt, fill: luma(58%), str(line.number))),
-    )
-    h(0.55em)
-    line.body
-  }
+  box(
+    width: 2.4em,
+    align(right, text(size: 6.5pt, fill: luma(58%), str(line.number))),
+  )
+  h(0.55em)
+  line.body
 }
 
 #let template-meta(entry) = block(
@@ -75,7 +70,7 @@
   radius: 1pt,
   below: 3pt,
 )[
-  #set text(size: 6.2pt, fill: luma(30%))
+  #set text(size: 7pt, fill: luma(30%))
   #grid(
     columns: (1fr, auto),
     column-gutter: 4pt,
@@ -127,7 +122,7 @@
   )
   #v(5mm)
   #text(size: 6.5pt, fill: luma(42%))[
-    A4 - two-column - monochrome - Consolas
+    A4 - portrait - single-column - monochrome - Consolas
   ]
 ]
 
@@ -135,8 +130,6 @@
 #outline(title: [Quick Index], depth: 2)
 
 #pagebreak()
-#set page(columns: 2)
-#set columns(gutter: 9pt)
 
 #for category in book.categories {
   heading(level: 1, category.name)
