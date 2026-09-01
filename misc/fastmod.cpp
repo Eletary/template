@@ -1,5 +1,5 @@
 // @title 快速模乘
-// @brief 两个 mul 选择一个用，连续乘时第一个更快
+// @brief 要求 1<=P<2^31 且 a<P；复用 trans(z) 时第一个 mul 更快
 // @complexity O(1)
 // @author ppip
 
