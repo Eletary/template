@@ -93,31 +93,36 @@
 
 #align(center)[
   #v(7mm)
-  #text(size: 25pt, weight: "bold", tracking: 0.04em)[#book.title]
+  #text(size: 27pt, weight: "bold", tracking: 0.06em)[#book.title]
   #v(5mm)
-  #line(length: 68%, stroke: 1pt + black)
-  #v(5mm)
-  #text(size: 13pt, weight: "bold")[#book.team]
-  #v(8mm)
-  #grid(
-    columns: (1fr, 1fr, 1fr),
-    gutter: 8pt,
-    block(inset: 7pt, stroke: 0.5pt + luma(60%))[
-      #text(size: 18pt, weight: "bold")[#book.stats.categories]
-      #linebreak()
-      #text(size: 7pt)[CATEGORIES]
-    ],
-    block(inset: 7pt, stroke: 0.5pt + luma(60%))[
-      #text(size: 18pt, weight: "bold")[#book.stats.templates]
-      #linebreak()
-      #text(size: 7pt)[TEMPLATES]
-    ],
-    block(inset: 7pt, stroke: 0.5pt + luma(60%))[
-      #text(size: 18pt, weight: "bold")[#book.stats.lines]
-      #linebreak()
-      #text(size: 7pt)[SOURCE LINES]
-    ],
-  )
+  #line(length: 76%, stroke: 0.8pt + black)
+  #v(4mm)
+  #text(size: 11pt, weight: "bold", tracking: 0.04em)[#book.team]
+  #v(7mm)
+  #block(width: 76%)[
+    #line(length: 100%, stroke: 0.45pt + luma(45%))
+    #v(4pt)
+    #grid(
+      columns: (1fr, 1fr, 1fr),
+      [
+        #text(size: 16pt, weight: "bold")[#book.stats.categories]
+        #h(3pt)
+        #text(size: 6.5pt, fill: luma(35%))[CATEGORIES]
+      ],
+      [
+        #text(size: 16pt, weight: "bold")[#book.stats.templates]
+        #h(3pt)
+        #text(size: 6.5pt, fill: luma(35%))[TEMPLATES]
+      ],
+      [
+        #text(size: 16pt, weight: "bold")[#book.stats.lines]
+        #h(3pt)
+        #text(size: 6.5pt, fill: luma(35%))[SOURCE LINES]
+      ],
+    )
+    #v(4pt)
+    #line(length: 100%, stroke: 0.45pt + luma(45%))
+  ]
 ]
 
 #v(8mm)
