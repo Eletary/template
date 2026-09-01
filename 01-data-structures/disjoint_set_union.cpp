@@ -1,7 +1,7 @@
 // @title Disjoint Set Union
 // @brief Maintain components with path compression and union by size.
 // @complexity O(alpha(n)) amortized per operation
-// @tags dsu, union-find, connectivity
+// @author Team Template
 
 struct DSU {
     std::vector<int> parent, size;

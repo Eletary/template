@@ -50,7 +50,7 @@
 #show heading.where(level: 1): set text(size: 11pt, weight: "bold")
 #show heading.where(level: 2): set text(size: 9.5pt, weight: "bold")
 #show raw: set text(font: "Consolas", size: 8.5pt)
-#set raw(theme: none, tab-size: 4)
+#set raw(theme: "monochrome.tmTheme", tab-size: 4)
 
 #show raw.line: line => {
   box(
@@ -85,9 +85,9 @@
     #h(1fr)
     *COST* #entry.complexity
   ]
-  #if entry.tags != "" [
+  #if entry.author != "" [
     #v(1.5pt)
-    *TAGS* #entry.tags
+    *AUTHOR* #entry.author
   ]
 ]
 
@@ -122,7 +122,7 @@
   )
   #v(5mm)
   #text(size: 6.5pt, fill: luma(42%))[
-    A4 - portrait - single-column - monochrome - Consolas
+    A4 - portrait - single-column - monochrome highlight - Consolas
   ]
 ]
 

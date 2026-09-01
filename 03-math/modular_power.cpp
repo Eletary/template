@@ -1,7 +1,7 @@
 // @title Modular Power and Inverse
 // @brief Binary exponentiation and multiplicative inverse modulo a prime.
 // @complexity O(log exponent)
-// @tags modular-arithmetic, number-theory, fast-power
+// @author Team Template
 
 using i64 = long long;
 

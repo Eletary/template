@@ -16,7 +16,10 @@ CONFIG_PATH = ROOT / "codebook.toml"
 BUILD_DIR = ROOT / ".build"
 MANIFEST_PATH = BUILD_DIR / "manifest.json"
 
-META_RE = re.compile(r"^\s*//\s*@(?P<key>title|brief|complexity|tags)\s+(?P<value>.+?)\s*$")
+META_RE = re.compile(r"^\s*//\s*@(?P<key>title|brief|complexity|author)\s+(?P<value>.+?)\s*$")
+STRIPPED_META_RE = re.compile(
+    r"^\s*//\s*@(title|brief|complexity|author|tags)\s+.+?\s*$"
+)
 ORDER_PREFIX_RE = re.compile(r"^\d+[\s._-]*")
 TOKEN_RE = re.compile(r"(\d+)")
 
@@ -36,7 +39,7 @@ def display_name(value: str) -> str:
 
 
 def metadata_from(source: str) -> dict[str, str]:
-    metadata = {"title": "", "brief": "", "complexity": "", "tags": ""}
+    metadata = {"title": "", "brief": "", "complexity": "", "author": ""}
     for line in source.splitlines()[:40]:
         match = META_RE.match(line)
         if match:
@@ -49,7 +52,7 @@ def printable_source(source: str) -> str:
     kept = [
         line
         for index, line in enumerate(lines)
-        if not (index < 40 and META_RE.match(line))
+        if not (index < 40 and STRIPPED_META_RE.match(line))
     ]
     while kept and not kept[0].strip():
         kept.pop(0)
@@ -63,6 +66,7 @@ def is_excluded(path: Path, excluded: set[str]) -> bool:
 def build_manifest(config: dict[str, object]) -> dict[str, object]:
     excluded = set(config.get("exclude_dirs", []))
     line_limit = int(config.get("warn_line_length", 92))
+    team_name = str(config.get("team", "Team Template"))
     sources = sorted(
         (
             path
@@ -102,7 +106,7 @@ def build_manifest(config: dict[str, object]) -> dict[str, object]:
                 "title": title,
                 "brief": metadata["brief"],
                 "complexity": metadata["complexity"],
-                "tags": metadata["tags"],
+                "author": metadata["author"] or team_name,
                 "path": relative.as_posix(),
                 "render_path": rendered_path.relative_to(ROOT).as_posix(),
                 "lines": len(lines),
@@ -115,7 +119,7 @@ def build_manifest(config: dict[str, object]) -> dict[str, object]:
     ]
     return {
         "title": str(config.get("title", "ICPC Team Codebook")),
-        "team": str(config.get("team", "Team Template")),
+        "team": team_name,
         "season": str(config.get("season", "")),
         "footer_note": str(config.get("footer_note", "ICPC Codebook")),
         "categories": grouped,

@@ -20,10 +20,10 @@
 // @title Dijkstra Shortest Paths
 // @brief Single-source shortest paths with non-negative weights.
 // @complexity O((n + m) log n)
-// @tags graph, shortest-path
+// @author Your Name
 ```
 
-板子中无需写 `main()`；建议保持每行不超过 `codebook.toml` 中的 `warn_line_length`，避免打印时出现长行换行。`@...` 元数据只进入标题信息条，不会在代码区重复打印。代码区包含连续行号，空行也会显示对应行号。
+板子中无需写 `main()`；建议保持每行不超过 `codebook.toml` 中的 `warn_line_length`，避免打印时出现长行换行。`@author` 缺省时会使用 `codebook.toml` 中的队名。`@...` 元数据只进入标题信息条，不会在代码区重复打印。代码区包含连续行号，空行也会显示对应行号。
 
 ## 本地构建（WSL）
 
@@ -49,4 +49,4 @@ Pull Request 只构建和上传 artifact，不会写回分支。
 
 ## 定制
 
-在 `codebook.toml` 修改封面标题、队名、赛季、忽略目录和行长警告阈值。排版细节在 `codebook.typ` 中，包括 A4 竖向单栏、目录、章节编号、PDF 书签、页眉、页码、连续灰色行号及纯黑代码。
+在 `codebook.toml` 修改封面标题、队名、赛季、忽略目录和行长警告阈值。排版细节在 `codebook.typ` 中，包括 A4 竖向单栏、目录、章节编号、PDF 书签、页眉、页码、连续灰色行号，以及适合黑白打印的高对比语法高亮。高亮主题定义在 `monochrome.tmTheme`。

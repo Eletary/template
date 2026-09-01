@@ -1,7 +1,7 @@
 // @title Dijkstra Shortest Paths
 // @brief Single-source shortest paths in a graph with non-negative edge weights.
 // @complexity O((n + m) log n)
-// @tags graph, shortest-path, priority-queue
+// @author Team Template
 
 using i64 = long long;
 constexpr i64 INF = std::numeric_limits<i64>::max() / 4;
