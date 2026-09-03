@@ -1,6 +1,7 @@
 title = "ICPC Code Template"
 team = "喵喵喵幼儿园"
 footer_note = "ICPC Codebook"
+checklist_path = "notes/checklist.md"
 
 # Directories ignored while recursively scanning for C++ templates.
 exclude_dirs = [".git", ".build", ".github", "scripts"]

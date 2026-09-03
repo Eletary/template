@@ -24,6 +24,36 @@ ORDER_PREFIX_RE = re.compile(r"^\d+[\s._-]*")
 TOKEN_RE = re.compile(r"(\d+)")
 
 
+def checklist_from(path: Path) -> dict[str, object]:
+    """Read the small Markdown subset used by the front-page checklist."""
+    if not path.is_file():
+        return {"title": "", "intro": [], "sections": []}
+
+    title = path.stem
+    intro: list[str] = []
+    sections: list[dict[str, object]] = []
+    current: dict[str, object] | None = None
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        if line.startswith("# "):
+            title = line[2:].strip()
+        elif line.startswith("## "):
+            current = {"title": line[3:].strip(), "items": [], "paragraphs": []}
+            sections.append(current)
+        elif line.startswith("- "):
+            if current is None:
+                current = {"title": "", "items": [], "paragraphs": []}
+                sections.append(current)
+            current["items"].append(line[2:].strip())
+        elif current is None:
+            intro.append(line)
+        else:
+            current["paragraphs"].append(line)
+    return {"title": title, "intro": intro, "sections": sections}
+
+
 def natural_key(value: str) -> tuple[object, ...]:
     return tuple(int(token) if token.isdigit() else token.casefold() for token in TOKEN_RE.split(value))
 
@@ -74,6 +104,7 @@ def build_manifest(config: dict[str, object]) -> dict[str, object]:
     excluded = set(config.get("exclude_dirs", []))
     line_limit = int(config.get("warn_line_length", 92))
     team_name = str(config.get("team", "Team Template"))
+    checklist_path = ROOT / str(config.get("checklist_path", "notes/checklist.md"))
     sources = sorted(
         (
             path
@@ -128,6 +159,7 @@ def build_manifest(config: dict[str, object]) -> dict[str, object]:
         "title": str(config.get("title", "ICPC Team Codebook")),
         "team": team_name,
         "footer_note": str(config.get("footer_note", "ICPC Codebook")),
+        "checklist": checklist_from(checklist_path),
         "categories": grouped,
         "stats": {
             "categories": len(grouped),

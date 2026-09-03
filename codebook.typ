@@ -125,7 +125,50 @@
   ]
 ]
 
-#v(8mm)
+#pagebreak()
+
+#if book.checklist.title != "" {
+  align(center, text(size: 18pt, weight: "bold")[#book.checklist.title])
+  v(3mm)
+  for paragraph in book.checklist.intro {
+    align(center, text(size: 8pt, fill: luma(35%))[#paragraph])
+    v(2pt)
+  }
+  v(2mm)
+  grid(
+    columns: (1fr, 1fr),
+    column-gutter: 7mm,
+    row-gutter: 4mm,
+    ..book.checklist.sections.map(section => block(
+      breakable: false,
+      inset: 5pt,
+      stroke: 0.4pt + luma(72%),
+      radius: 2pt,
+    )[
+      #if section.title != "" {
+        text(size: 10pt, weight: "bold")[#section.title]
+        v(2pt)
+        line(length: 100%, stroke: 0.35pt + luma(75%))
+        v(2pt)
+      }
+      #for paragraph in section.paragraphs {
+        text(size: 7.5pt)[#paragraph]
+        v(2pt)
+      }
+      #for item in section.items {
+        grid(
+          columns: (0.9em, 1fr),
+          column-gutter: 1pt,
+          text(size: 8pt, weight: "bold")[!],
+          text(size: 7.5pt)[#item],
+        )
+        v(2.5pt)
+      }
+    ]),
+  )
+  pagebreak()
+}
+
 #outline(title: [Quick Index], depth: 2)
 
 #pagebreak()
