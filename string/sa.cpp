@@ -1,10 +1,10 @@
 // @title 后缀数组
-// @brief 倍增算法求 sa，rk，height
+// @brief 倍增算法求 sa，rk，height, 字符必须不超过 '~'
 // @complexity O(n log n)
 // @author ppip
 
 char s[N+5];
-int id[N+5],sa[N+5],buc[N+5],h[N+5],rk[N+5];
+int id[N*2+5],sa[N+5],buc[N+5],h[N+5],rk[N+5];
 int main() {
     // read s
 	int n(strlen(s+1));
@@ -26,7 +26,8 @@ int main() {
 		fill_n(buc+1,m,0);
 		copy_n(rk+1,n,id+1);
 		m=0;
-		for (int i{1};i<=n;++i) rk[sa[i]]=m+=(id[sa[i]]!=id[sa[i-1]]||id[sa[i]+w]!=id[sa[i-1]+w]);
+		for (int i{1};i<=n;++i)
+			rk[sa[i]]=m+=(id[sa[i]]!=id[sa[i-1]]||id[sa[i]+w]!=id[sa[i-1]+w]);
 	}
 	// for (int i{1};i<=n;++i) cout<<sa[i]<<" ";
 	for (int i{1},k{0};i<=n;++i) {

@@ -3,7 +3,7 @@
 // @complexity Tree height O(log n)
 // @author ppip
 
-vector<int> e[N+5];
+vector<pair<int,int>> e[N+5];
 int sz[N+5],fa[N+5],son[N+5];
 void TOPTREE_INIT(int u) {
 	sz[u]=1;
@@ -28,7 +28,7 @@ using iter=vector<P>::iterator;
 int merge(iter L,iter R,char tp) {
 	if (L+1==R) {
 		int z{L->first};
-		if (z<=n) t[z].u=fa[z];t[z].v=z;
+		if (z<=n) t[z].u=fa[z],t[z].v=z;
 		return z;
 	}
 	iter p{L+1};
@@ -59,7 +59,6 @@ int build(int u) {
 }
 int main() {
 	cnode=n;
-	GREAT_INIT(1,0);
 	TOPTREE_INIT(1);
 	int rt{build(1)};
 	return 0;

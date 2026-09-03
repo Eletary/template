@@ -1,11 +1,11 @@
 // @title 后缀树
-// @brief Ukk 算法建隐式后缀树
+// @brief Ukkonen 在线构造隐式后缀树
 // @complexity build O(n) 
 // @author ppip
 
 constexpr int N(1e6),inf(1e7),RNG{26+26+10};
 struct Suft {
-	map<char,int> ch[N*2+5];
+	int ch[N*2+5][RNG];
 	int st[N*2+5],len[N*2+5],link[N*2+5];
 	char s[N+5];
 	int now{1},rem{0},n{0},tot{1};
@@ -37,8 +37,8 @@ struct Suft {
 	void search(int u,int dep=0) {
 		if (st[u]+len[u]-1>=n&&st[u]-dep!=n) cout<<st[u]-dep<<" ";
 		else dep+=len[u];
-		for (auto [i,v]:ch[u])
-			if (v) search(v,dep);
+		for (int i{0};i<RNG;++i)
+			if (ch[u][i]) search(ch[u][i],dep);
 	}
 
 } T;
