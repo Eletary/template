@@ -125,9 +125,28 @@
   ]
 ]
 
+#v(8mm)
+#outline(title: [Quick Index], depth: 2)
+
 #pagebreak()
 
+#for category in book.categories {
+  heading(level: 1, category.name)
+  line(length: 100%, stroke: 0.55pt + black)
+  for entry in category.entries {
+    heading(level: 2, entry.title)
+    template-meta(entry)
+    block(
+      width: 100%,
+      above: 2pt,
+      below: 6pt,
+      raw(read(entry.render_path), lang: "cpp", block: true),
+    )
+  }
+}
+
 #if book.checklist.title != "" {
+  pagebreak()
   align(center, text(size: 18pt, weight: "bold")[#book.checklist.title])
   v(3mm)
   for paragraph in book.checklist.intro {
@@ -166,24 +185,4 @@
       }
     ]),
   )
-  pagebreak()
-}
-
-#outline(title: [Quick Index], depth: 2)
-
-#pagebreak()
-
-#for category in book.categories {
-  heading(level: 1, category.name)
-  line(length: 100%, stroke: 0.55pt + black)
-  for entry in category.entries {
-    heading(level: 2, entry.title)
-    template-meta(entry)
-    block(
-      width: 100%,
-      above: 2pt,
-      below: 6pt,
-      raw(read(entry.render_path), lang: "cpp", block: true),
-    )
-  }
 }
