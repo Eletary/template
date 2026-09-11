@@ -1,6 +1,6 @@
-// @title DIF-DIT NTT
+// @title DIF-DIT NTT & All op
 // @brief 效率较高的 NTT
-// @complexity O(nlogn)
+// @complexity 除『』外，均为 O(nlogn)
 // @author ppip
 
 using LL=long long;
@@ -20,7 +20,7 @@ struct poly {
     const LL& operator[](int i)const{return a[i];}
     void resize(int n){a.resize(n);}
 
-    static LL pw(LL a,LL n){
+    static LL qp(LL a,LL n=mod-2){
         LL r=1;
         for(;n;n>>=1,a=a*a%mod)if(n&1)r=r*a%mod;
         return r;
@@ -36,7 +36,7 @@ struct poly {
         if(k>=m)return;
         w.resize(m);
         for(;k<m;k<<=1){
-            LL r=pw(31,1<<(21-__lg(k)));
+            LL r=qp(31,1<<(21-__lg(k)));
             for(int i=0;i<k;i++)w[k+i]=w[i]*r%mod;
         }
     }
@@ -116,8 +116,46 @@ struct poly {
         return c;
     }
 
-    poly& operator*=(const poly&b){
-        return *this=*this*b;
-    }
+	friend poly operator+(poly A,const poly&B){
+		if(A.size()<B.size()) A.resize(B.size());
+		for(int i=0;i<B.size();++i){
+			A[i]+=B[i];
+			if(A[i]>=mod) A[i]-=mod;
+		}
+		return A;
+	}
+	friend poly operator-(poly A,const poly&B){
+		if(A.size()<B.size()) A.resize(B.size());
+		for(int i=0;i<B.size();++i){
+			A[i]-=B[i];
+			if(A[i]<0) A[i]+=mod;
+		}
+		return A;
+	}
+
+	poly& operator+=(const poly&b){
+		return *this=*this+b;
+	}
+	poly& operator-=(const poly&b){
+		return *this=*this-b;
+	}
+	poly& operator*=(const poly&b){
+		return *this=*this*b;
+	}
+
+	friend poly inv(const poly &f,int n=0) {
+		if (!n) n=(f.size()-1);
+		poly F{f[0]},G{qp(F[0])};
+		for (int i{2};(i>>1)<=n;i<<=1) {
+			// FG=1+E
+			// G1=G(1-E)=G(1-(FG-1))=G(2-FG)
+			F.resize(i);
+			for (int j{i/2};j<i&&j<=n;++j) F[j]=f[j];
+			G=G*(poly{2}-F*G);
+			G.resize(i);
+		}
+		G.resize(n+1);
+		return G;
+	}
 };
 vector<LL> poly::w{1};
