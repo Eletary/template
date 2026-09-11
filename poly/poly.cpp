@@ -4,7 +4,12 @@
 // @author ppip
 
 using LL=long long;
-
+#define ensure(x) do { \
+    if (!(x)) { \
+        fprintf(stderr,"ensure failed: %s, line %d\n",#x,__LINE__); \
+        exit(1); \
+    } \
+} while(0)
 struct poly {
     static const int mod=998244353;
     vector<LL>a;
@@ -31,7 +36,7 @@ struct poly {
     }
 
     static void init(int n){
-        // assert(n>0&&!(n&(n-1))&&n<=(1<<23));
+        ensure(n>0&&!(n&(n-1))&&n<=(1<<23));
         int m=n>>1,k=w.size();
         if(k>=m)return;
         w.resize(m);
@@ -143,8 +148,9 @@ struct poly {
 		return *this=*this*b;
 	}
 
-	friend poly inv(const poly &f,int n=0) {
-		if (!n) n=(f.size()-1);
+	friend poly inv(const poly &f,int n=-1) {
+        ensure(f.size() && f[0]);
+		if (n==-1) n=(f.size()-1);
 		poly F{f[0]},G{qp(F[0])};
 		for (int i{2};(i>>1)<=n;i<<=1) {
 			// FG=1+E
