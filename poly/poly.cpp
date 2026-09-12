@@ -163,5 +163,32 @@ struct poly {
 		G.resize(n+1);
 		return G;
 	}
+	friend poly dev(const poly &f) {
+		if (f.size()<=1) return poly{0};
+		poly g(f.size()-1);
+		for (int i=1;i<f.size();++i)
+			g[i-1]=f[i]*i%mod;
+		return g;
+	}
+	friend poly inte(const poly &f) {
+		poly g(f.size()+1);
+		g[0]=0;
+		vector<LL> iv(f.size()+1);
+		if (f.size()) iv[1]=1;
+		for (int i=2;i<=f.size();++i)
+			iv[i]=mod-mod/i*iv[mod%i]%mod;
+		for (int i=0;i<f.size();++i)
+			g[i+1]=f[i]*iv[i+1]%mod;
+		return g;
+	}
+	friend poly ln(const poly &f,int n=-1) {
+		ensure(f[0]==1);
+		// G'=(lnF)'=F'/F
+		// G=int(F'*F^-1)
+		if (n==-1) n=f.size();
+		auto g{inte(dev(f)*inv(f))};
+		g.resize(n);
+		return g;
+	}
 };
 vector<LL> poly::w{1};
