@@ -1,47 +1,48 @@
 // @title Euclid
-// @brief 
-// @complexity O(\log max (a, c))
+// @brief 类欧几里得算法
+// @complexity O(\log \max(a,c))
 // @author yzj
 namespace Euclid {
-	const int mod = 998244353, inv2 = 499122177, inv6 = 166374059;
-	struct Data { int f, g, h; };
+        using ll = long long;
+        const mint inv2 = 499122177, inv6 = 166374059;
+        struct Data { mint f, g, h; };
 
-	inline Data calc(int n, int a, int b, int c) {
-		if(a >= c || b >= c) {
-			int A = a / c, B = b / c;
-			Data t = calc(n, a % c, b % c, c);
-			int N = n % mod, s0 = (N + 1) % mod;
-			int s1 = N * s0 % mod * inv2 % mod;
-			int s2 = N * s0 % mod * (2 * N + 1) % mod * inv6 % mod;
-			A %= mod; B %= mod;
+        inline Data calc (ll n, ll a, ll b, ll c) {
+                if(n < 0) return {};
 
-			int f = (t.f + A * s1 + B * s0) % mod;
-			int g = (t.g + A * A % mod * s2 + B * B % mod * s0
-				+ 2 * A % mod * t.h + 2 * B % mod * t.f
-				+ 2 * A % mod * B % mod * s1) % mod;
-			int h = (t.h + A * s2 + B * s1) % mod;
-			return {f, g, h};
-		}
+                ll A = a / c, B = b / c;
+                a %= c; b %= c;
+                if(a < 0) a += c, --A;
+                if(b < 0) b += c, --B;
 
-		int m = (a * n + b) / c;
-		if(!m) return {0, 0, 0};
+                mint N = n % MOD, s0 = N + 1;
+                mint s1 = N * s0 * inv2;
+                mint s2 = N * s0 * (2 * N + 1) * inv6;
 
-		Data t = calc(m - 1, c, c - b - 1, a);
-		int N = n % mod, M = m % mod;
-		int s1 = N * ((N + 1) % mod) % mod * inv2 % mod;
+                if(A || B) {
+                        Data t = calc(n, a, b, c);
+                        mint x = A % MOD, y = B % MOD;
+                        return {
+                                t.f + x * s1 + y * s0,
+                                t.g + x * x * s2 + y * y * s0
+                                        + 2 * x * t.h + 2 * y * t.f
+                                        + 2 * x * y * s1,
+                                t.h + x * s2 + y * s1
+                        };
+                }
 
-		int f = (N * M % mod - t.f) % mod;
-		int g = (N * M % mod * M % mod - 2 * t.h - t.f) % mod;
-		int h = (M * s1 % mod - (t.g + t.f) % mod * inv2) % mod;
-		if(f < 0) f += mod;
-		if(g < 0) g += mod;
-		if(h < 0) h += mod;
-		return {f, g, h};
-	}
+                ll m = ((__int128)a * n + b) / c;
+                if(!m) return {};
+
+                Data t = calc(m - 1, c, c - b - 1, a);
+                mint M = m % MOD;
+                return {
+                        N * M - t.f,
+                        N * M * M - 2 * t.h - t.f,
+                        M * s1 - (t.g + t.f) * inv2
+                };
+        }
+// f: sum floor((a*i+b)/c)
+// g: sum floor((a*i+b)/c)^2
+// h: sum i*floor((a*i+b)/c)
 }
-
-auto [f, g, h] = Euclid::calc(n, a, b, c);
-
-f // sum floor((ai+b)/c)
-g // sum floor((ai+b)/c)^2
-h // sum i*floor((ai+b)/c)
